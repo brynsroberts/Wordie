@@ -5,12 +5,29 @@ import "./Cell.css";
 
 interface CellProps {
   letter: string;
-  variant: "success" | "secondary" | "warning";
+  word: string;
+  index: number;
 }
 
 const Cell: React.FC<CellProps> = (props) => {
+  const getVariant = () => {
+    if (props.letter === props.word[props.index]) {
+      return "success";
+    }
+
+    if (props.letter.length === 0) {
+      return "secondary";
+    }
+
+    if (props.word.includes(props.letter)) {
+      return "warning";
+    }
+
+    return "secondary";
+  };
+
   return (
-    <Button className="cell" variant={props.variant} disabled>
+    <Button className="cell" variant={getVariant()} disabled>
       {props.letter}
     </Button>
   );

@@ -7,6 +7,7 @@ import "./BoardRow.css";
 
 interface BoardRowProps {
   row: string[];
+  word: string;
 }
 
 const BoardRow: React.FC<BoardRowProps> = (props) => {
@@ -14,7 +15,7 @@ const BoardRow: React.FC<BoardRowProps> = (props) => {
     <Row>
       <Col xs={12}>
         {props.row.map((letter, index) => {
-          return <Cell letter={letter} key={index} variant="secondary" />;
+          return <Cell letter={letter} key={index} index={index} word={props.word} />;
         })}
       </Col>
     </Row>

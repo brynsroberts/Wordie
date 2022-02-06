@@ -9,9 +9,9 @@ import Keyboard from "./components/keyboard/Keyboard";
 import "./App.css";
 
 const STARTER_BOARD = [
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
+  ["A", "B", "C", "D", "E"],
+  ["F", "G", "H", "I", "J"],
+  ["F", "I", "V", "E", "R"],
   ["", "", "", "", ""],
   ["", "", "", "", ""],
   ["", "", "", "", ""],
@@ -45,7 +45,7 @@ const setNewBoard = (wordLength: number) => {
 };
 
 const App: React.FC = () => {
-  const [word, setWord] = useState<string>("fiver");
+  const [word, setWord] = useState<string>("FIVER");
   const [board, setBoard] = useState<string[][]>(STARTER_BOARD);
 
   useEffect(() => {
