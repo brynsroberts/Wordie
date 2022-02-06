@@ -17,6 +17,8 @@ const STARTER_BOARD = [
   ["", "", "", "", ""],
 ];
 
+const NUMBER_OF_ROWS = 6;
+
 const randomWords = require("random-words");
 const getFirstRandomWord = () => {
   let word = "";
@@ -50,6 +52,8 @@ const App: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<number>(0);
   const [currentColumn, setCurrentColumn] = useState<number>(0);
   const [totalIndex, setTotalIndex] = useState<number>(0);
+  const [gameOver, setGameOver] = useState<boolean>(false);
+  const [gameWon, setGameWon] = useState<boolean>(false);
 
   const updateBoardAfterInput = (letter: string) => {
     const prevBoard = board;
@@ -61,6 +65,18 @@ const App: React.FC = () => {
     e.preventDefault();
     updateBoardAfterInput(e.target.value);
     setTotalIndex(totalIndex + 1);
+
+    if ((totalIndex + 1) % word.length === 0) {
+      const guess = board[currentRow].join("");
+      if (guess === word) {
+        setGameOver(true);
+        setGameWon(true);
+      }
+    }
+
+    if (totalIndex + 1 === NUMBER_OF_ROWS * word.length) {
+      setGameOver(true);
+    }
 
     setCurrentColumn(currentColumn + 1);
     if (currentColumn === word.length - 1) {
@@ -79,7 +95,6 @@ const App: React.FC = () => {
     setBoard((prevState) => {
       return setNewBoard(word.length);
     });
-    console.log(word);
   }, [word]);
 
   return (
@@ -101,7 +116,10 @@ const App: React.FC = () => {
       <Row>
         <Col></Col>
         <Col xs={12} md={10}>
-          <Keyboard handleKeyboardClick={handleKeyboardClick} />
+          <Keyboard
+            handleKeyboardClick={handleKeyboardClick}
+            disableButton={gameOver}
+          />
         </Col>
         <Col></Col>
       </Row>

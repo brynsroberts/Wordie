@@ -12,6 +12,7 @@ const KEYBOARD = [
 
 interface KeyboardProps {
   handleKeyboardClick: (e: any) => void;
+  disableButton: boolean;
 }
 
 const Keyboard: React.FC<KeyboardProps> = (props) => {
@@ -23,6 +24,7 @@ const Keyboard: React.FC<KeyboardProps> = (props) => {
             handleKeyboardClick={props.handleKeyboardClick}
             row={row}
             key={index}
+            disableButton={props.disableButton}
           />
         );
       })}

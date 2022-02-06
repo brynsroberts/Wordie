@@ -7,6 +7,7 @@ import IndividualKey from "./IndividualKey";
 interface KeyboardRowProps {
   row: string[];
   handleKeyboardClick: (e: any) => void;
+  disableButton: boolean;
 }
 
 const KeyboardRow: React.FC<KeyboardRowProps> = (props) => {
@@ -19,6 +20,7 @@ const KeyboardRow: React.FC<KeyboardRowProps> = (props) => {
               handleKeyboardClick={props.handleKeyboardClick}
               letter={letter}
               key={index}
+              disableButton={props.disableButton}
             />
           );
         })}

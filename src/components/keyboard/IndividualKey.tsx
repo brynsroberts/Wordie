@@ -7,6 +7,7 @@ import "./IndividualKey.css";
 interface KeyProps {
   letter: string;
   handleKeyboardClick: (e: any) => void;
+  disableButton: boolean;
 }
 
 const IndividualKey: React.FC<KeyProps> = (props) => {
@@ -16,6 +17,7 @@ const IndividualKey: React.FC<KeyProps> = (props) => {
       variant="light"
       value={props.letter}
       onClick={(e) => props.handleKeyboardClick(e)}
+      disabled={props.disableButton}
     >
       {props.letter === "DELETE" ? <FiDelete /> : props.letter}
     </Button>
