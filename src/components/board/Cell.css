@@ -1,0 +1,6 @@
+.cardCSS {
+  display: inline-block;
+  height: 64px;
+  min-width: 64px;
+  margin: 2px;
+}

@@ -1,0 +1,6 @@
+.buttonCSS {
+  display: inline-block;
+  height: 4rem;
+  min-width: 37px;
+  margin: 2px;
+}

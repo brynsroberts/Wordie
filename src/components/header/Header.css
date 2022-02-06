@@ -1,0 +1,13 @@
+#title {
+  font-size: 30px;
+  color: black;
+}
+
+#navbar {
+  border-bottom: 1px solid grey;
+}
+
+#settingsIcon {
+  margin-left: 10px;
+  margin-right: 0px;
+}
