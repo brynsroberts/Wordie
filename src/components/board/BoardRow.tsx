@@ -8,10 +8,11 @@ import "./BoardRow.css";
 interface BoardRowProps {
   row: string[];
   word: string;
+  totalIndex: number;
+  rowIndex: number;
 }
 
 const BoardRow: React.FC<BoardRowProps> = (props) => {
-
   return (
     <Row>
       <Col xs={12}>
@@ -22,6 +23,8 @@ const BoardRow: React.FC<BoardRowProps> = (props) => {
               key={index}
               index={index}
               word={props.word}
+              totalIndex={props.totalIndex}
+              rowIndex={props.rowIndex}
             />
           );
         })}

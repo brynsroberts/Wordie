@@ -7,6 +7,8 @@ interface CellProps {
   letter: string;
   word: string;
   index: number;
+  totalIndex: number;
+  rowIndex: number;
 }
 
 const Cell: React.FC<CellProps> = (props) => {
@@ -27,7 +29,15 @@ const Cell: React.FC<CellProps> = (props) => {
   };
 
   return (
-    <Button className="cell" variant={updateVariant()} disabled>
+    <Button
+      className="cell"
+      variant={
+        props.totalIndex >= (props.rowIndex + 1) * props.word.length
+          ? updateVariant()
+          : "secondary"
+      }
+      disabled
+    >
       {props.letter}
     </Button>
   );

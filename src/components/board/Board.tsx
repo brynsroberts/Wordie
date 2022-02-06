@@ -7,6 +7,7 @@ import "./Board.css";
 interface BoardProps {
   word: string;
   board: string[][];
+  totalIndex: number;
 }
 
 const Board: React.FC<BoardProps> = (props) => {
@@ -18,6 +19,8 @@ const Board: React.FC<BoardProps> = (props) => {
             row={row}
             key={index}
             word={props.word}
+            totalIndex={props.totalIndex}
+            rowIndex={index}
           />
         );
       })}

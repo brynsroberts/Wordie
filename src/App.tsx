@@ -49,6 +49,7 @@ const App: React.FC = () => {
   const [board, setBoard] = useState<string[][]>(STARTER_BOARD);
   const [currentRow, setCurrentRow] = useState<number>(0);
   const [currentColumn, setCurrentColumn] = useState<number>(0);
+  const [totalIndex, setTotalIndex] = useState<number>(0);
 
   const updateBoardAfterInput = (letter: string) => {
     const prevBoard = board;
@@ -56,16 +57,10 @@ const App: React.FC = () => {
     setBoard(prevBoard);
   };
 
-  const updateRowAndColumn = () => {
-    if (currentColumn === word.length - 1) {
-      // check if word is real
-      // update color of cell
-    }
-  };
-
   const handleKeyboardClick = (e: any) => {
     e.preventDefault();
     updateBoardAfterInput(e.target.value);
+    setTotalIndex(totalIndex + 1);
 
     setCurrentColumn(currentColumn + 1);
     if (currentColumn === word.length - 1) {
@@ -99,7 +94,7 @@ const App: React.FC = () => {
       <Row>
         <Col></Col>
         <Col xs={12} md={10}>
-          <Board word={word} board={board} />
+          <Board word={word} board={board} totalIndex={totalIndex} />
         </Col>
         <Col></Col>
       </Row>
