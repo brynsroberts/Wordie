@@ -8,6 +8,9 @@ import Board from "./components/board/Board";
 import Keyboard from "./components/keyboard/Keyboard";
 import "./App.css";
 
+var randomWords = require("random-words");
+console.log(randomWords({ exactly: 5, maxLength: 4 }));
+
 const App: React.FC = () => {
   return (
     <Container className="App">

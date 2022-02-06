@@ -13,8 +13,8 @@ const BoardRow: React.FC<BoardRowProps> = (props) => {
   return (
     <Row>
       <Col xs={12}>
-        {props.row.map((letter) => {
-          return <Cell letter={letter} variant="secondary" />;
+        {props.row.map((letter, index) => {
+          return <Cell letter={letter} key={index} variant="secondary" />;
         })}
       </Col>
     </Row>

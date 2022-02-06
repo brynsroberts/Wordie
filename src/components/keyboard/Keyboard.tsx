@@ -13,8 +13,8 @@ const KEYBOARD = [
 const Keyboard: React.FC = () => {
   return (
     <Container className="keyboard">
-      {KEYBOARD.map((row) => {
-        return <KeyboardRow row={row} />;
+      {KEYBOARD.map((row, index) => {
+        return <KeyboardRow row={row} key={index} />;
       })}
     </Container>
   );

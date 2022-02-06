@@ -16,8 +16,8 @@ const WordData = [
 function Board() {
   return (
     <Container className="board">
-      {WordData.map((row) => {
-        return <BoardRow row={row} />;
+      {WordData.map((row, index) => {
+        return <BoardRow row={row} key={index}/>;
       })}
     </Container>
   );
