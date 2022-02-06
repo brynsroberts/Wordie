@@ -4,23 +4,19 @@ import Container from "react-bootstrap/Container";
 import BoardRow from "./BoardRow";
 import "./Board.css";
 
-const WordData = [
-  ["", "", "", "", "", ""],
-  ["", "", "", "", "", ""],
-  ["", "", "", "", "", ""],
-  ["", "", "", "", "", ""],
-  ["", "", "", "", "", ""],
-  ["", "", "", "", "", ""],
-];
+interface BoardProps {
+  word: string;
+  board: string[][];
+}
 
-function Board() {
+const Board: React.FC<BoardProps> = (props) => {
   return (
     <Container className="board">
-      {WordData.map((row, index) => {
-        return <BoardRow row={row} key={index}/>;
+      {props.board.map((row, index) => {
+        return <BoardRow row={row} key={index} />;
       })}
     </Container>
   );
-}
+};
 
 export default Board;

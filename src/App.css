@@ -1,3 +1,7 @@
 .App {
   text-align: center;
 }
+
+.boardRow {
+  height: 576px;
+}
