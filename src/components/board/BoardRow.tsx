@@ -11,10 +11,10 @@ interface BoardRowProps {
 
 const BoardRow: React.FC<BoardRowProps> = (props) => {
   return (
-    <Row className="">
+    <Row>
       <Col xs={12}>
         {props.row.map((letter) => {
-          return <Cell letter={letter} />;
+          return <Cell letter={letter} variant="secondary" />;
         })}
       </Col>
     </Row>
