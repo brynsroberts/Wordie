@@ -10,7 +10,7 @@ interface CellProps {
 }
 
 const Cell: React.FC<CellProps> = (props) => {
-  const getVariant = () => {
+  const updateVariant = () => {
     if (props.letter === props.word[props.index]) {
       return "success";
     }
@@ -27,7 +27,7 @@ const Cell: React.FC<CellProps> = (props) => {
   };
 
   return (
-    <Button className="cell" variant={getVariant()} disabled>
+    <Button className="cell" variant={updateVariant()} disabled>
       {props.letter}
     </Button>
   );

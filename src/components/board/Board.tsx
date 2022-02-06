@@ -13,7 +13,13 @@ const Board: React.FC<BoardProps> = (props) => {
   return (
     <Container className="board">
       {props.board.map((row, index) => {
-        return <BoardRow row={row} key={index} word={props.word}/>;
+        return (
+          <BoardRow
+            row={row}
+            key={index}
+            word={props.word}
+          />
+        );
       })}
     </Container>
   );

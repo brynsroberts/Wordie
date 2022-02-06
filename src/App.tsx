@@ -9,9 +9,9 @@ import Keyboard from "./components/keyboard/Keyboard";
 import "./App.css";
 
 const STARTER_BOARD = [
-  ["A", "B", "C", "D", "E"],
-  ["F", "G", "H", "I", "J"],
-  ["F", "I", "V", "E", "R"],
+  ["", "", "", "", ""],
+  ["", "", "", "", ""],
+  ["", "", "", "", ""],
   ["", "", "", "", ""],
   ["", "", "", "", ""],
   ["", "", "", "", ""],
@@ -28,7 +28,7 @@ const getFirstRandomWord = () => {
     });
     word = words[0];
   }
-  return word;
+  return word.toUpperCase();
 };
 
 const setNewBoard = (wordLength: number) => {
@@ -47,6 +47,32 @@ const setNewBoard = (wordLength: number) => {
 const App: React.FC = () => {
   const [word, setWord] = useState<string>("FIVER");
   const [board, setBoard] = useState<string[][]>(STARTER_BOARD);
+  const [currentRow, setCurrentRow] = useState<number>(0);
+  const [currentColumn, setCurrentColumn] = useState<number>(0);
+
+  const updateBoardAfterInput = (letter: string) => {
+    const prevBoard = board;
+    prevBoard[currentRow][currentColumn] = letter;
+    setBoard(prevBoard);
+  };
+
+  const updateRowAndColumn = () => {
+    if (currentColumn === word.length - 1) {
+      // check if word is real
+      // update color of cell
+    }
+  };
+
+  const handleKeyboardClick = (e: any) => {
+    e.preventDefault();
+    updateBoardAfterInput(e.target.value);
+
+    setCurrentColumn(currentColumn + 1);
+    if (currentColumn === word.length - 1) {
+      setCurrentRow(currentRow + 1);
+      setCurrentColumn(0);
+    }
+  };
 
   useEffect(() => {
     setWord((prevState) => {
@@ -58,6 +84,7 @@ const App: React.FC = () => {
     setBoard((prevState) => {
       return setNewBoard(word.length);
     });
+    console.log(word);
   }, [word]);
 
   return (
@@ -79,7 +106,7 @@ const App: React.FC = () => {
       <Row>
         <Col></Col>
         <Col xs={12} md={10}>
-          <Keyboard />
+          <Keyboard handleKeyboardClick={handleKeyboardClick} />
         </Col>
         <Col></Col>
       </Row>

@@ -6,6 +6,7 @@ import IndividualKey from "./IndividualKey";
 
 interface KeyboardRowProps {
   row: string[];
+  handleKeyboardClick: (e: any) => void;
 }
 
 const KeyboardRow: React.FC<KeyboardRowProps> = (props) => {
@@ -13,7 +14,13 @@ const KeyboardRow: React.FC<KeyboardRowProps> = (props) => {
     <Row className="align-items-center justify-content-center">
       <Col xs={12}>
         {props.row.map((letter, index) => {
-          return <IndividualKey letter={letter} key={index} />;
+          return (
+            <IndividualKey
+              handleKeyboardClick={props.handleKeyboardClick}
+              letter={letter}
+              key={index}
+            />
+          );
         })}
       </Col>
     </Row>

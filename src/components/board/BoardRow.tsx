@@ -11,11 +11,19 @@ interface BoardRowProps {
 }
 
 const BoardRow: React.FC<BoardRowProps> = (props) => {
+
   return (
     <Row>
       <Col xs={12}>
         {props.row.map((letter, index) => {
-          return <Cell letter={letter} key={index} index={index} word={props.word} />;
+          return (
+            <Cell
+              letter={letter}
+              key={index}
+              index={index}
+              word={props.word}
+            />
+          );
         })}
       </Col>
     </Row>

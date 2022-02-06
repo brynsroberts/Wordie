@@ -10,11 +10,21 @@ const KEYBOARD = [
   ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "DELETE"],
 ];
 
-const Keyboard: React.FC = () => {
+interface KeyboardProps {
+  handleKeyboardClick: (e: any) => void;
+}
+
+const Keyboard: React.FC<KeyboardProps> = (props) => {
   return (
     <Container className="keyboard">
       {KEYBOARD.map((row, index) => {
-        return <KeyboardRow row={row} key={index} />;
+        return (
+          <KeyboardRow
+            handleKeyboardClick={props.handleKeyboardClick}
+            row={row}
+            key={index}
+          />
+        );
       })}
     </Container>
   );
