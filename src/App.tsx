@@ -8,14 +8,27 @@ import Board from "./components/board/Board";
 import Keyboard from "./components/keyboard/Keyboard";
 import "./App.css";
 
+const STARTER_BOARD = [
+  ["", "", "", "", ""],
+  ["", "", "", "", ""],
+  ["", "", "", "", ""],
+  ["", "", "", "", ""],
+  ["", "", "", "", ""],
+  ["", "", "", "", ""],
+];
+
 const randomWords = require("random-words");
-const getRandomWord = () => {
-  const words = randomWords({
-    exactly: 100,
-    maxLength: 5,
-    minLength: 5,
-  });
-  return words;
+const getFirstRandomWord = () => {
+  let word = "";
+  while (word.length !== 5) {
+    let words = randomWords({
+      exactly: 1,
+      max: 5,
+      min: 5,
+    });
+    word = words[0];
+  }
+  return word;
 };
 
 const setNewBoard = (wordLength: number) => {
@@ -33,13 +46,11 @@ const setNewBoard = (wordLength: number) => {
 
 const App: React.FC = () => {
   const [word, setWord] = useState<string>("fiver");
-  const [board, setBoard] = useState<string[][]>([]);
+  const [board, setBoard] = useState<string[][]>(STARTER_BOARD);
 
   useEffect(() => {
-    const words = getRandomWord();
-    const fiveLetterWords = words.filter((word: string) => word.length === 5);
     setWord((prevState) => {
-      return fiveLetterWords[0];
+      return getFirstRandomWord();
     });
   }, []);
 
@@ -47,28 +58,27 @@ const App: React.FC = () => {
     setBoard((prevState) => {
       return setNewBoard(word.length);
     });
-    console.log(word);
   }, [word]);
 
   return (
     <Container className="App">
       <Row>
         <Col></Col>
-        <Col xs={12} sm={10}>
+        <Col xs={12} md={8} lg={6}>
           <Header />
         </Col>
         <Col></Col>
       </Row>
       <Row>
         <Col></Col>
-        <Col xs={12} sm={10}>
+        <Col xs={12} md={10}>
           <Board word={word} board={board} />
         </Col>
         <Col></Col>
       </Row>
       <Row>
         <Col></Col>
-        <Col xs={12} sm={10}>
+        <Col xs={12} md={10}>
           <Keyboard />
         </Col>
         <Col></Col>
