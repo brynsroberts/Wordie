@@ -6,6 +6,7 @@ import Col from "react-bootstrap/Col";
 import Header from "./components/header/Header";
 import Board from "./components/board/Board";
 import Keyboard from "./components/keyboard/Keyboard";
+import Outcome from "./components/Outcome/Outcome";
 import "./App.css";
 
 const STARTER_BOARD = [
@@ -79,7 +80,7 @@ const App: React.FC = () => {
         setGameOver(true);
         setGameWon(true);
         setCurrentRow(currentRow + 1);
-      } else if (totalIndex + 1 === NUMBER_OF_ROWS * word.length) {
+      } else if (currentRow === NUMBER_OF_ROWS - 1) {
         setGameOver(true);
         setCurrentRow(currentRow + 1);
       } else {
@@ -91,7 +92,6 @@ const App: React.FC = () => {
 
   const handleKeyboardClick = (e: any) => {
     e.preventDefault();
-
     if (e.target.value === "DELETE") {
       handleDelete();
       return;
@@ -100,6 +100,9 @@ const App: React.FC = () => {
       return;
     }
 
+    if (currentRow > 5) {
+      setGameOver(true);
+    }
     if (currentColumn < word.length) {
       updateBoardAfterInput(e.target.value);
       setTotalIndex(totalIndex + 1);
@@ -132,6 +135,7 @@ const App: React.FC = () => {
       <Row>
         <Col></Col>
         <Col xs={12} md={10}>
+          {gameOver && <Outcome gameOver={gameOver} gameWon={gameWon} />}
           <Board
             word={word}
             board={board}
