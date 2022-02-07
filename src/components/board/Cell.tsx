@@ -14,6 +14,8 @@ interface CellProps {
 
 const Cell: React.FC<CellProps> = (props) => {
   const updateVariant = () => {
+    
+    
     if (props.letter === props.word[props.index]) {
       return "success";
     }

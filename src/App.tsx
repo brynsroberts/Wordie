@@ -135,7 +135,9 @@ const App: React.FC = () => {
       <Row>
         <Col></Col>
         <Col xs={12} md={10}>
-          {gameOver && <Outcome gameOver={gameOver} gameWon={gameWon} />}
+          {gameOver && (
+            <Outcome gameOver={gameOver} gameWon={gameWon} word={word} />
+          )}
           <Board
             word={word}
             board={board}
