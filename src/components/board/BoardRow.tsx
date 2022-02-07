@@ -10,6 +10,7 @@ interface BoardRowProps {
   word: string;
   totalIndex: number;
   rowIndex: number;
+  currentRow: number;
 }
 
 const BoardRow: React.FC<BoardRowProps> = (props) => {
@@ -25,6 +26,7 @@ const BoardRow: React.FC<BoardRowProps> = (props) => {
               word={props.word}
               totalIndex={props.totalIndex}
               rowIndex={props.rowIndex}
+              currentRow={props.currentRow}
             />
           );
         })}

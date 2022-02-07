@@ -61,27 +61,49 @@ const App: React.FC = () => {
     setBoard(prevBoard);
   };
 
-  const handleKeyboardClick = (e: any) => {
-    e.preventDefault();
-    updateBoardAfterInput(e.target.value);
-    setTotalIndex(totalIndex + 1);
+  const handleDelete = () => {
+    if (currentColumn === 0) {
+      return;
+    }
+    let newBoard = board;
+    newBoard[currentRow][currentColumn - 1] = "";
+    setBoard(newBoard);
+    setTotalIndex(totalIndex - 1);
+    setCurrentColumn((prevState) => prevState - 1);
+  };
 
-    if ((totalIndex + 1) % word.length === 0) {
+  const handleEnter = () => {
+    if (currentColumn === word.length) {
       const guess = board[currentRow].join("");
       if (guess === word) {
         setGameOver(true);
         setGameWon(true);
+        setCurrentRow(currentRow + 1);
+      } else if (totalIndex + 1 === NUMBER_OF_ROWS * word.length) {
+        setGameOver(true);
+        setCurrentRow(currentRow + 1);
+      } else {
+        setCurrentRow(currentRow + 1);
+        setCurrentColumn(0);
       }
     }
+  };
 
-    if (totalIndex + 1 === NUMBER_OF_ROWS * word.length) {
-      setGameOver(true);
+  const handleKeyboardClick = (e: any) => {
+    e.preventDefault();
+
+    if (e.target.value === "DELETE") {
+      handleDelete();
+      return;
+    } else if (e.target.value === "ENTER") {
+      handleEnter();
+      return;
     }
 
-    setCurrentColumn(currentColumn + 1);
-    if (currentColumn === word.length - 1) {
-      setCurrentRow(currentRow + 1);
-      setCurrentColumn(0);
+    if (currentColumn < word.length) {
+      updateBoardAfterInput(e.target.value);
+      setTotalIndex(totalIndex + 1);
+      setCurrentColumn(currentColumn + 1);
     }
   };
 
@@ -95,6 +117,7 @@ const App: React.FC = () => {
     setBoard((prevState) => {
       return setNewBoard(word.length);
     });
+    console.log(word);
   }, [word]);
 
   return (
@@ -109,7 +132,12 @@ const App: React.FC = () => {
       <Row>
         <Col></Col>
         <Col xs={12} md={10}>
-          <Board word={word} board={board} totalIndex={totalIndex} />
+          <Board
+            word={word}
+            board={board}
+            totalIndex={totalIndex}
+            currentRow={currentRow}
+          />
         </Col>
         <Col></Col>
       </Row>

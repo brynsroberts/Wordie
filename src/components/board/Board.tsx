@@ -8,6 +8,7 @@ interface BoardProps {
   word: string;
   board: string[][];
   totalIndex: number;
+  currentRow: number;
 }
 
 const Board: React.FC<BoardProps> = (props) => {
@@ -21,6 +22,7 @@ const Board: React.FC<BoardProps> = (props) => {
             word={props.word}
             totalIndex={props.totalIndex}
             rowIndex={index}
+            currentRow={props.currentRow}
           />
         );
       })}

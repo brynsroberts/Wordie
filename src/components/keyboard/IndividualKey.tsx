@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-import { FiDelete } from "react-icons/fi";
 
 import "./IndividualKey.css";
 
@@ -19,7 +18,7 @@ const IndividualKey: React.FC<KeyProps> = (props) => {
       onClick={(e) => props.handleKeyboardClick(e)}
       disabled={props.disableButton}
     >
-      {props.letter === "DELETE" ? <FiDelete /> : props.letter}
+      {props.letter}
     </Button>
   );
 };
