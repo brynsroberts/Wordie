@@ -1,3 +1,7 @@
-.board {
-  margin-top: 25px;
+.boardfalse {
+  margin-top: 39px;
+}
+
+.boardtrue {
+  margin-top: 0px;
 }

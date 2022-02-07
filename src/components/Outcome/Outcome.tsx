@@ -13,6 +13,7 @@ const Outcome: React.FC<OutcomeProps> = (props) => {
       <Col xs={12}>
         {props.gameWon && <h3>Winner!</h3>}
         {props.gameOver && !props.gameWon && <h3>Game Over</h3>}
+        {!props.gameWon && !props.gameOver && <h3>{"    "}</h3>}
       </Col>
     </Row>
   );

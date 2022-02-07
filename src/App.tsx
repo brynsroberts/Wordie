@@ -141,6 +141,7 @@ const App: React.FC = () => {
             board={board}
             totalIndex={totalIndex}
             currentRow={currentRow}
+            gameOver={gameOver}
           />
         </Col>
         <Col></Col>
