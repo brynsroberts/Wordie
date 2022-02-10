@@ -13,7 +13,7 @@ const IndividualKey: React.FC<KeyProps> = (props) => {
   return (
     <Button
       className="buttonCSS"
-      variant="light"
+      variant="dark"
       value={props.letter}
       onClick={(e) => props.handleKeyboardClick(e)}
       disabled={props.disableButton}

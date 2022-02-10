@@ -55,6 +55,25 @@ const App: React.FC = () => {
   const [totalIndex, setTotalIndex] = useState<number>(0);
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [gameWon, setGameWon] = useState<boolean>(false);
+  const [streak, setStreak] = useState<number>(0);
+
+  const newWord = () => {
+    let word = "";
+    let words = randomWords({
+      exactly: 1,
+      max: 6,
+    });
+    word = words[0];
+    setWord(word.toUpperCase());
+    if (!gameWon) {
+      setStreak(0);
+    }
+    setGameOver(false);
+    setGameWon(false);
+    setCurrentRow(0);
+    setCurrentColumn(0);
+    setTotalIndex(0);
+  };
 
   const updateBoardAfterInput = (letter: string) => {
     const prevBoard = board;
@@ -80,9 +99,11 @@ const App: React.FC = () => {
         setGameOver(true);
         setGameWon(true);
         setCurrentRow(currentRow + 1);
+        setStreak(streak + 1);
       } else if (currentRow === NUMBER_OF_ROWS - 1) {
         setGameOver(true);
         setCurrentRow(currentRow + 1);
+        setStreak(0);
       } else {
         setCurrentRow(currentRow + 1);
         setCurrentColumn(0);
@@ -91,6 +112,7 @@ const App: React.FC = () => {
   };
 
   const handleKeyboardClick = (e: any) => {
+    console.log(e.target.value);
     e.preventDefault();
     if (e.target.value === "DELETE") {
       handleDelete();
@@ -128,7 +150,7 @@ const App: React.FC = () => {
       <Row>
         <Col></Col>
         <Col xs={12} md={8} lg={6}>
-          <Header />
+          <Header newWord={newWord} streak={streak} />
         </Col>
         <Col></Col>
       </Row>

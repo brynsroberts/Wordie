@@ -1,20 +1,21 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
-import { AiOutlineQuestionCircle } from "react-icons/ai";
-import { IoMdSettings } from "react-icons/io";
-import { IoStatsChartSharp } from "react-icons/io5";
+import Button from "react-bootstrap/Button";
 
 import "./Header.css";
 
-function Header() {
+interface HeaderProps {
+  newWord: () => void;
+  streak: number;
+}
+
+const Header: React.FC<HeaderProps> = (props) => {
   return (
     <Navbar id="navbar">
       <Container>
         <Navbar.Collapse className="justify-content-left">
-          <Navbar.Text>
-            <AiOutlineQuestionCircle />
-          </Navbar.Text>
+          <Navbar.Text>Current Streak: {props.streak}</Navbar.Text>
         </Navbar.Collapse>
         <Navbar.Collapse className="justify-content-center">
           <Navbar.Text id="title">
@@ -24,13 +25,14 @@ function Header() {
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text>
-            <IoStatsChartSharp />
-            <IoMdSettings id="settingsIcon" />
+            <Button variant="outline-dark" onClick={props.newWord}>
+              New Word
+            </Button>{" "}
           </Navbar.Text>
         </Navbar.Collapse>
       </Container>
     </Navbar>
   );
-}
+};
 
 export default Header;
