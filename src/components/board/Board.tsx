@@ -9,12 +9,12 @@ interface BoardProps {
   board: string[][];
   totalIndex: number;
   currentRow: number;
-  gameOver: boolean;
+  style: string;
 }
 
 const Board: React.FC<BoardProps> = (props) => {
   return (
-    <Container className={"board" + props.gameOver}>
+    <Container className={"board" + props.style}>
       {props.board.map((row, index) => {
         return (
           <BoardRow

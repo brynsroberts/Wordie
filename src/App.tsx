@@ -9,6 +9,8 @@ import Keyboard from "./components/keyboard/Keyboard";
 import Outcome from "./components/Outcome/Outcome";
 import "./App.css";
 
+const wordExists = require("word-exists");
+
 const STARTER_BOARD = [
   ["", "", "", "", ""],
   ["", "", "", "", ""],
@@ -56,14 +58,17 @@ const App: React.FC = () => {
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [gameWon, setGameWon] = useState<boolean>(false);
   const [streak, setStreak] = useState<number>(0);
+  const [realWord, setRealWord] = useState<boolean>(true);
 
   const newWord = () => {
     let word = "";
-    let words = randomWords({
-      exactly: 1,
-      max: 6,
-    });
-    word = words[0];
+    while (word.length > 6 || word.length < 4) {
+      let words = randomWords({
+        exactly: 1,
+        max: 6,
+      });
+      word = words[0];
+    }
     setWord(word.toUpperCase());
     if (!gameWon) {
       setStreak(0);
@@ -73,6 +78,7 @@ const App: React.FC = () => {
     setCurrentRow(0);
     setCurrentColumn(0);
     setTotalIndex(0);
+    setRealWord(true);
   };
 
   const updateBoardAfterInput = (letter: string) => {
@@ -95,25 +101,29 @@ const App: React.FC = () => {
   const handleEnter = () => {
     if (currentColumn === word.length) {
       const guess = board[currentRow].join("");
-      if (guess === word) {
-        setGameOver(true);
-        setGameWon(true);
-        setCurrentRow(currentRow + 1);
-        setStreak(streak + 1);
-      } else if (currentRow === NUMBER_OF_ROWS - 1) {
-        setGameOver(true);
-        setCurrentRow(currentRow + 1);
-        setStreak(0);
+      if (wordExists(guess)) {
+        if (guess === word) {
+          setGameOver(true);
+          setGameWon(true);
+          setCurrentRow(currentRow + 1);
+          setStreak(streak + 1);
+        } else if (currentRow === NUMBER_OF_ROWS - 1) {
+          setGameOver(true);
+          setCurrentRow(currentRow + 1);
+          setStreak(0);
+        } else {
+          setCurrentRow(currentRow + 1);
+          setCurrentColumn(0);
+        }
       } else {
-        setCurrentRow(currentRow + 1);
-        setCurrentColumn(0);
+        setRealWord(false);
       }
     }
   };
 
   const handleKeyboardClick = (e: any) => {
-    console.log(e.target.value);
     e.preventDefault();
+    setRealWord(true);
     if (e.target.value === "DELETE") {
       handleDelete();
       return;
@@ -157,15 +167,20 @@ const App: React.FC = () => {
       <Row>
         <Col></Col>
         <Col xs={12} md={10}>
-          {gameOver && (
-            <Outcome gameOver={gameOver} gameWon={gameWon} word={word} />
+          {(gameOver || !realWord) && (
+            <Outcome
+              gameOver={gameOver}
+              gameWon={gameWon}
+              word={word}
+              realWord={realWord}
+            />
           )}
           <Board
             word={word}
             board={board}
             totalIndex={totalIndex}
             currentRow={currentRow}
-            gameOver={gameOver}
+            style={gameOver || !realWord ? "word" : ""}
           />
         </Col>
         <Col></Col>
