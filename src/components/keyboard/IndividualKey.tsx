@@ -7,13 +7,14 @@ interface KeyProps {
   letter: string;
   handleKeyboardClick: (e: any) => void;
   disableButton: boolean;
+  variant: "success" | "danger" | "secondary" | "warning" | "dark";
 }
 
 const IndividualKey: React.FC<KeyProps> = (props) => {
   return (
     <Button
       className="buttonCSS"
-      variant="dark"
+      variant={props.variant}
       value={props.letter}
       onClick={(e) => props.handleKeyboardClick(e)}
       disabled={props.disableButton}

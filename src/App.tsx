@@ -8,28 +8,102 @@ import Board from "./components/board/Board";
 import Keyboard from "./components/keyboard/Keyboard";
 import Outcome from "./components/Outcome/Outcome";
 import "./App.css";
-
 const wordExists = require("word-exists");
 
-const STARTER_BOARD = [
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
-  ["", "", "", "", ""],
+interface BoardType {
+  letter: string;
+  variant: "success" | "danger" | "secondary" | "warning";
+}
+
+const STARTER_BOARD: BoardType[][] = [
+  [
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+  ],
+  [
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+  ],
+  [
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+  ],
+  [
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+  ],
+  [
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+    { letter: "", variant: "secondary" },
+  ],
+];
+
+interface KeyboardType {
+  letter: string;
+  variant: "success" | "danger" | "secondary" | "warning" | "dark";
+}
+
+let KEYBOARD: KeyboardType[][] = [
+  [
+    { letter: "Q", variant: "secondary" },
+    { letter: "W", variant: "secondary" },
+    { letter: "E", variant: "secondary" },
+    { letter: "R", variant: "secondary" },
+    { letter: "T", variant: "secondary" },
+    { letter: "Y", variant: "secondary" },
+    { letter: "U", variant: "secondary" },
+    { letter: "I", variant: "secondary" },
+    { letter: "O", variant: "secondary" },
+    { letter: "P", variant: "secondary" },
+  ],
+  [
+    { letter: "A", variant: "secondary" },
+    { letter: "S", variant: "secondary" },
+    { letter: "D", variant: "secondary" },
+    { letter: "F", variant: "secondary" },
+    { letter: "G", variant: "secondary" },
+    { letter: "H", variant: "secondary" },
+    { letter: "J", variant: "secondary" },
+    { letter: "K", variant: "secondary" },
+    { letter: "L", variant: "secondary" },
+  ],
+  [
+    { letter: "ENTER", variant: "secondary" },
+    { letter: "Z", variant: "secondary" },
+    { letter: "X", variant: "secondary" },
+    { letter: "C", variant: "secondary" },
+    { letter: "V", variant: "secondary" },
+    { letter: "B", variant: "secondary" },
+    { letter: "N", variant: "secondary" },
+    { letter: "M", variant: "secondary" },
+    { letter: "DELETE", variant: "secondary" },
+  ],
 ];
 
 const NUMBER_OF_ROWS = 6;
 
 const randomWords = require("random-words");
-const getFirstRandomWord = () => {
+const getRandomWord = (minLetters: number, maxLetters: number) => {
   let word = "";
-  while (word.length !== 5) {
+  while (word.length < minLetters || word.length > maxLetters) {
     let words = randomWords({
       exactly: 1,
-      max: 5,
-      min: 5,
+      max: maxLetters,
     });
     word = words[0];
   }
@@ -37,11 +111,11 @@ const getFirstRandomWord = () => {
 };
 
 const setNewBoard = (wordLength: number) => {
-  let newBoard = [];
+  let newBoard: BoardType[][] = [];
   for (let i = 0; i < 6; i++) {
-    let boardRow = [];
+    let boardRow: BoardType[] = [];
     for (let j = 0; j < wordLength; j++) {
-      boardRow.push("");
+      boardRow.push({ letter: "", variant: "secondary" });
     }
     newBoard.push(boardRow);
   }
@@ -51,7 +125,7 @@ const setNewBoard = (wordLength: number) => {
 
 const App: React.FC = () => {
   const [word, setWord] = useState<string>("FIVER");
-  const [board, setBoard] = useState<string[][]>(STARTER_BOARD);
+  const [board, setBoard] = useState<BoardType[][]>(STARTER_BOARD);
   const [currentRow, setCurrentRow] = useState<number>(0);
   const [currentColumn, setCurrentColumn] = useState<number>(0);
   const [totalIndex, setTotalIndex] = useState<number>(0);
@@ -59,20 +133,9 @@ const App: React.FC = () => {
   const [gameWon, setGameWon] = useState<boolean>(false);
   const [streak, setStreak] = useState<number>(0);
   const [realWord, setRealWord] = useState<boolean>(true);
+  const [keyboard, setKeyboard] = useState<KeyboardType[][]>(KEYBOARD);
 
-  const newWord = () => {
-    let word = "";
-    while (word.length > 6 || word.length < 4) {
-      let words = randomWords({
-        exactly: 1,
-        max: 6,
-      });
-      word = words[0];
-    }
-    setWord(word.toUpperCase());
-    if (!gameWon) {
-      setStreak(0);
-    }
+  const resetGameValuesNewWord = () => {
     setGameOver(false);
     setGameWon(false);
     setCurrentRow(0);
@@ -81,9 +144,17 @@ const App: React.FC = () => {
     setRealWord(true);
   };
 
+  const newWord = () => {
+    setWord(getRandomWord(4, 6));
+    if (!gameWon) {
+      setStreak(0);
+    }
+    resetGameValuesNewWord();
+  };
+
   const updateBoardAfterInput = (letter: string) => {
     const prevBoard = board;
-    prevBoard[currentRow][currentColumn] = letter;
+    prevBoard[currentRow][currentColumn].letter = letter;
     setBoard(prevBoard);
   };
 
@@ -92,15 +163,24 @@ const App: React.FC = () => {
       return;
     }
     let newBoard = board;
-    newBoard[currentRow][currentColumn - 1] = "";
+    newBoard[currentRow][currentColumn - 1].letter = "";
     setBoard(newBoard);
     setTotalIndex(totalIndex - 1);
     setCurrentColumn((prevState) => prevState - 1);
   };
 
+  const getCurrentGuess = () => {
+    let word = "";
+    for (let cell of board[currentRow]) {
+      word += cell.letter;
+    }
+    console.log(word);
+    return word;
+  };
+
   const handleEnter = () => {
     if (currentColumn === word.length) {
-      const guess = board[currentRow].join("");
+      const guess = getCurrentGuess();
       if (wordExists(guess)) {
         if (guess === word) {
           setGameOver(true);
@@ -131,7 +211,6 @@ const App: React.FC = () => {
       handleEnter();
       return;
     }
-
     if (currentRow > 5) {
       setGameOver(true);
     }
@@ -144,7 +223,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     setWord((prevState) => {
-      return getFirstRandomWord();
+      return getRandomWord(5, 5);
     });
   }, []);
 
@@ -191,6 +270,7 @@ const App: React.FC = () => {
           <Keyboard
             handleKeyboardClick={handleKeyboardClick}
             disableButton={gameOver}
+            keyboard={keyboard}
           />
         </Col>
         <Col></Col>

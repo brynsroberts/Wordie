@@ -6,7 +6,10 @@ import "./Board.css";
 
 interface BoardProps {
   word: string;
-  board: string[][];
+  board: {
+    letter: string;
+    variant: "success" | "danger" | "secondary" | "warning" | "dark";
+  }[][];
   totalIndex: number;
   currentRow: number;
   style: string;

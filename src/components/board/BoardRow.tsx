@@ -6,7 +6,10 @@ import Cell from "./Cell";
 import "./BoardRow.css";
 
 interface BoardRowProps {
-  row: string[];
+  row: {
+    letter: string;
+    variant: "success" | "danger" | "secondary" | "warning" | "dark";
+  }[];
   word: string;
   totalIndex: number;
   rowIndex: number;
@@ -17,10 +20,10 @@ const BoardRow: React.FC<BoardRowProps> = (props) => {
   return (
     <Row>
       <Col xs={12}>
-        {props.row.map((letter, index) => {
+        {props.row.map((cell, index) => {
           return (
             <Cell
-              letter={letter}
+              letter={cell.letter}
               key={index}
               index={index}
               word={props.word}

@@ -5,7 +5,10 @@ import Col from "react-bootstrap/Col";
 import IndividualKey from "./IndividualKey";
 
 interface KeyboardRowProps {
-  row: string[];
+  row: {
+    letter: string;
+    variant: "success" | "danger" | "secondary" | "warning" | "dark";
+  }[];
   handleKeyboardClick: (e: any) => void;
   disableButton: boolean;
 }
@@ -14,13 +17,14 @@ const KeyboardRow: React.FC<KeyboardRowProps> = (props) => {
   return (
     <Row className="align-items-center justify-content-center">
       <Col xs={12}>
-        {props.row.map((letter, index) => {
+        {props.row.map((key, index) => {
           return (
             <IndividualKey
               handleKeyboardClick={props.handleKeyboardClick}
-              letter={letter}
+              letter={key.letter}
               key={index}
               disableButton={props.disableButton}
+              variant={key.variant}
             />
           );
         })}
