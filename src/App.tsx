@@ -58,7 +58,7 @@ interface KeyboardType {
   variant: "success" | "danger" | "secondary" | "warning" | "dark";
 }
 
-let KEYBOARD: KeyboardType[][] = [
+const STARTER_KEYBOARD: KeyboardType[][] = [
   [
     { letter: "Q", variant: "secondary" },
     { letter: "W", variant: "secondary" },
@@ -119,7 +119,6 @@ const setNewBoard = (wordLength: number) => {
     }
     newBoard.push(boardRow);
   }
-
   return newBoard;
 };
 
@@ -133,7 +132,42 @@ const App: React.FC = () => {
   const [gameWon, setGameWon] = useState<boolean>(false);
   const [streak, setStreak] = useState<number>(0);
   const [realWord, setRealWord] = useState<boolean>(true);
-  const [keyboard, setKeyboard] = useState<KeyboardType[][]>(KEYBOARD);
+  const [keyboard, setKeyboard] = useState<KeyboardType[][]>(STARTER_KEYBOARD);
+
+  const setKeyboardVariants = (guess: string) => {
+    let newKeyboard = keyboard;
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < keyboard[i].length; j++) {
+        console.log(keyboard[i][j].letter);
+        if (
+          keyboard[i][j].variant !== "success" &&
+          keyboard[i][j].variant !== "danger"
+        ) {
+          if (
+            guess.includes(keyboard[i][j].letter) &&
+            keyboard[i][j].letter !== "ENTER" &&
+            keyboard[i][j].letter !== "DELETE"
+          ) {
+            if (word.includes(keyboard[i][j].letter)) {
+              for (let k = 0; k < word.length; k++) {
+                if (word[k] === keyboard[i][j].letter && word[k] === guess[k]) {
+                  newKeyboard[i][j].variant = "success";
+                }
+              }
+              if (newKeyboard[i][j].variant !== "success") {
+                newKeyboard[i][j].variant = "warning";
+              }
+            } else {
+              newKeyboard[i][j].variant = "danger";
+            }
+          }
+        }
+      }
+    }
+    setKeyboard(newKeyboard);
+  };
+
+  const setBoardVariants = (guess: string) => {};
 
   const resetGameValuesNewWord = () => {
     setGameOver(false);
@@ -142,6 +176,45 @@ const App: React.FC = () => {
     setCurrentColumn(0);
     setTotalIndex(0);
     setRealWord(true);
+    setKeyboard((prevState) => {
+      return [
+        [
+          { letter: "Q", variant: "secondary" },
+          { letter: "W", variant: "secondary" },
+          { letter: "E", variant: "secondary" },
+          { letter: "R", variant: "secondary" },
+          { letter: "T", variant: "secondary" },
+          { letter: "Y", variant: "secondary" },
+          { letter: "U", variant: "secondary" },
+          { letter: "I", variant: "secondary" },
+          { letter: "O", variant: "secondary" },
+          { letter: "P", variant: "secondary" },
+        ],
+        [
+          { letter: "A", variant: "secondary" },
+          { letter: "S", variant: "secondary" },
+          { letter: "D", variant: "secondary" },
+          { letter: "F", variant: "secondary" },
+          { letter: "G", variant: "secondary" },
+          { letter: "H", variant: "secondary" },
+          { letter: "J", variant: "secondary" },
+          { letter: "K", variant: "secondary" },
+          { letter: "L", variant: "secondary" },
+        ],
+        [
+          { letter: "ENTER", variant: "secondary" },
+          { letter: "Z", variant: "secondary" },
+          { letter: "X", variant: "secondary" },
+          { letter: "C", variant: "secondary" },
+          { letter: "V", variant: "secondary" },
+          { letter: "B", variant: "secondary" },
+          { letter: "N", variant: "secondary" },
+          { letter: "M", variant: "secondary" },
+          { letter: "DELETE", variant: "secondary" },
+        ],
+      ];
+    });
+    console.log(keyboard);
   };
 
   const newWord = () => {
@@ -182,6 +255,8 @@ const App: React.FC = () => {
     if (currentColumn === word.length) {
       const guess = getCurrentGuess();
       if (wordExists(guess)) {
+        setKeyboardVariants(guess);
+        setBoardVariants(guess);
         if (guess === word) {
           setGameOver(true);
           setGameWon(true);
