@@ -15,85 +15,10 @@ interface BoardType {
   variant: "success" | "danger" | "secondary" | "warning";
 }
 
-const STARTER_BOARD: BoardType[][] = [
-  [
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-  ],
-  [
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-  ],
-  [
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-  ],
-  [
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-  ],
-  [
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-    { letter: "", variant: "secondary" },
-  ],
-];
-
 interface KeyboardType {
   letter: string;
   variant: "success" | "danger" | "secondary" | "warning" | "dark";
 }
-
-const STARTER_KEYBOARD: KeyboardType[][] = [
-  [
-    { letter: "Q", variant: "secondary" },
-    { letter: "W", variant: "secondary" },
-    { letter: "E", variant: "secondary" },
-    { letter: "R", variant: "secondary" },
-    { letter: "T", variant: "secondary" },
-    { letter: "Y", variant: "secondary" },
-    { letter: "U", variant: "secondary" },
-    { letter: "I", variant: "secondary" },
-    { letter: "O", variant: "secondary" },
-    { letter: "P", variant: "secondary" },
-  ],
-  [
-    { letter: "A", variant: "secondary" },
-    { letter: "S", variant: "secondary" },
-    { letter: "D", variant: "secondary" },
-    { letter: "F", variant: "secondary" },
-    { letter: "G", variant: "secondary" },
-    { letter: "H", variant: "secondary" },
-    { letter: "J", variant: "secondary" },
-    { letter: "K", variant: "secondary" },
-    { letter: "L", variant: "secondary" },
-  ],
-  [
-    { letter: "ENTER", variant: "secondary" },
-    { letter: "Z", variant: "secondary" },
-    { letter: "X", variant: "secondary" },
-    { letter: "C", variant: "secondary" },
-    { letter: "V", variant: "secondary" },
-    { letter: "B", variant: "secondary" },
-    { letter: "N", variant: "secondary" },
-    { letter: "M", variant: "secondary" },
-    { letter: "DELETE", variant: "secondary" },
-  ],
-];
 
 const NUMBER_OF_ROWS = 6;
 
@@ -122,9 +47,49 @@ const setNewBoard = (wordLength: number) => {
   return newBoard;
 };
 
+const setNewKeyboard = () => {
+  const newKeyboard: KeyboardType[][] = [
+    [
+      { letter: "Q", variant: "secondary" },
+      { letter: "W", variant: "secondary" },
+      { letter: "E", variant: "secondary" },
+      { letter: "R", variant: "secondary" },
+      { letter: "T", variant: "secondary" },
+      { letter: "Y", variant: "secondary" },
+      { letter: "U", variant: "secondary" },
+      { letter: "I", variant: "secondary" },
+      { letter: "O", variant: "secondary" },
+      { letter: "P", variant: "secondary" },
+    ],
+    [
+      { letter: "A", variant: "secondary" },
+      { letter: "S", variant: "secondary" },
+      { letter: "D", variant: "secondary" },
+      { letter: "F", variant: "secondary" },
+      { letter: "G", variant: "secondary" },
+      { letter: "H", variant: "secondary" },
+      { letter: "J", variant: "secondary" },
+      { letter: "K", variant: "secondary" },
+      { letter: "L", variant: "secondary" },
+    ],
+    [
+      { letter: "ENTER", variant: "secondary" },
+      { letter: "Z", variant: "secondary" },
+      { letter: "X", variant: "secondary" },
+      { letter: "C", variant: "secondary" },
+      { letter: "V", variant: "secondary" },
+      { letter: "B", variant: "secondary" },
+      { letter: "N", variant: "secondary" },
+      { letter: "M", variant: "secondary" },
+      { letter: "DELETE", variant: "secondary" },
+    ],
+  ];
+  return newKeyboard;
+};
+
 const App: React.FC = () => {
   const [word, setWord] = useState<string>("FIVER");
-  const [board, setBoard] = useState<BoardType[][]>(STARTER_BOARD);
+  const [board, setBoard] = useState<BoardType[][]>(setNewBoard(5));
   const [currentRow, setCurrentRow] = useState<number>(0);
   const [currentColumn, setCurrentColumn] = useState<number>(0);
   const [totalIndex, setTotalIndex] = useState<number>(0);
@@ -132,13 +97,15 @@ const App: React.FC = () => {
   const [gameWon, setGameWon] = useState<boolean>(false);
   const [streak, setStreak] = useState<number>(0);
   const [realWord, setRealWord] = useState<boolean>(true);
-  const [keyboard, setKeyboard] = useState<KeyboardType[][]>(STARTER_KEYBOARD);
+  const [keyboard, setKeyboard] = useState<KeyboardType[][]>(setNewKeyboard());
 
   const setKeyboardVariants = (guess: string) => {
-    let newKeyboard = keyboard;
-    for (let i = 0; i < 3; i++) {
+    let newState = keyboard;
+    for (let i = 0; i < keyboard.length; i++) {
       for (let j = 0; j < keyboard[i].length; j++) {
-        console.log(keyboard[i][j].letter);
+        if (keyboard[i][j].letter.length < 1) {
+          continue;
+        }
         if (
           keyboard[i][j].variant !== "success" &&
           keyboard[i][j].variant !== "danger"
@@ -151,23 +118,57 @@ const App: React.FC = () => {
             if (word.includes(keyboard[i][j].letter)) {
               for (let k = 0; k < word.length; k++) {
                 if (word[k] === keyboard[i][j].letter && word[k] === guess[k]) {
-                  newKeyboard[i][j].variant = "success";
+                  newState[i][j].variant = "success";
                 }
               }
-              if (newKeyboard[i][j].variant !== "success") {
-                newKeyboard[i][j].variant = "warning";
+              if (newState[i][j].variant !== "success") {
+                newState[i][j].variant = "warning";
               }
             } else {
-              newKeyboard[i][j].variant = "danger";
+              newState[i][j].variant = "danger";
             }
           }
         }
       }
     }
-    setKeyboard(newKeyboard);
+    setKeyboard(newState);
   };
 
-  const setBoardVariants = (guess: string) => {};
+  const setBoardVariants = (guess: string) => {
+    let newState = board;
+      for (let j = 0; j < board[currentRow].length; j++) {
+        if (board[currentRow][j].letter.length < 1) {
+          continue;
+        }
+        if (
+          board[currentRow][j].variant !== "success" &&
+          board[currentRow][j].variant !== "danger"
+        ) {
+          if (
+            guess.includes(board[currentRow][j].letter) &&
+            board[currentRow][j].letter !== "ENTER" &&
+            board[currentRow][j].letter !== "DELETE"
+          ) {
+            if (word.includes(board[currentRow][j].letter)) {
+              for (let k = 0; k < word.length; k++) {
+                if (
+                  word[k] === board[currentRow][j].letter &&
+                  word[k] === guess[k]
+                ) {
+                  newState[currentRow][j].variant = "success";
+                }
+              }
+              if (newState[currentRow][j].variant !== "success") {
+                newState[currentRow][j].variant = "warning";
+              }
+            } else {
+              newState[currentRow][j].variant = "danger";
+            }
+          }
+        }
+      }
+    setBoard(newState);
+  };
 
   const resetGameValuesNewWord = () => {
     setGameOver(false);
@@ -176,44 +177,7 @@ const App: React.FC = () => {
     setCurrentColumn(0);
     setTotalIndex(0);
     setRealWord(true);
-    setKeyboard((prevState) => {
-      return [
-        [
-          { letter: "Q", variant: "secondary" },
-          { letter: "W", variant: "secondary" },
-          { letter: "E", variant: "secondary" },
-          { letter: "R", variant: "secondary" },
-          { letter: "T", variant: "secondary" },
-          { letter: "Y", variant: "secondary" },
-          { letter: "U", variant: "secondary" },
-          { letter: "I", variant: "secondary" },
-          { letter: "O", variant: "secondary" },
-          { letter: "P", variant: "secondary" },
-        ],
-        [
-          { letter: "A", variant: "secondary" },
-          { letter: "S", variant: "secondary" },
-          { letter: "D", variant: "secondary" },
-          { letter: "F", variant: "secondary" },
-          { letter: "G", variant: "secondary" },
-          { letter: "H", variant: "secondary" },
-          { letter: "J", variant: "secondary" },
-          { letter: "K", variant: "secondary" },
-          { letter: "L", variant: "secondary" },
-        ],
-        [
-          { letter: "ENTER", variant: "secondary" },
-          { letter: "Z", variant: "secondary" },
-          { letter: "X", variant: "secondary" },
-          { letter: "C", variant: "secondary" },
-          { letter: "V", variant: "secondary" },
-          { letter: "B", variant: "secondary" },
-          { letter: "N", variant: "secondary" },
-          { letter: "M", variant: "secondary" },
-          { letter: "DELETE", variant: "secondary" },
-        ],
-      ];
-    });
+    setKeyboard(setNewKeyboard());
     console.log(keyboard);
   };
 

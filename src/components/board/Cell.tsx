@@ -10,6 +10,7 @@ interface CellProps {
   totalIndex: number;
   rowIndex: number;
   currentRow: number;
+  variant: "success" | "danger" | "secondary" | "warning" | "dark";
 }
 
 const Cell: React.FC<CellProps> = (props) => {
@@ -30,13 +31,7 @@ const Cell: React.FC<CellProps> = (props) => {
   };
 
   return (
-    <Button
-      className="cell"
-      variant={
-        props.currentRow > props.rowIndex ? updateVariant() : "secondary"
-      }
-      disabled
-    >
+    <Button className="cell" variant={props.variant} disabled>
       {props.letter}
     </Button>
   );

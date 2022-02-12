@@ -30,6 +30,7 @@ const BoardRow: React.FC<BoardRowProps> = (props) => {
               totalIndex={props.totalIndex}
               rowIndex={props.rowIndex}
               currentRow={props.currentRow}
+              variant={cell.variant}
             />
           );
         })}
