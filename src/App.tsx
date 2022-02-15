@@ -142,30 +142,30 @@ const App: React.FC = () => {
       if (board[currentRow][j].letter.length < 1) {
         continue;
       }
+      let count = 0;
+      for (const lett of guess) {
+        if (lett === board[currentRow][j].letter) {
+          count++;
+        }
+      }
       if (
         board[currentRow][j].variant !== "success" &&
         board[currentRow][j].variant !== "danger"
       ) {
         if (
-          guess.includes(board[currentRow][j].letter) &&
+          word.includes(board[currentRow][j].letter) &&
           board[currentRow][j].letter !== "ENTER" &&
           board[currentRow][j].letter !== "DELETE"
         ) {
-          if (word.includes(board[currentRow][j].letter)) {
-            for (let k = 0; k < word.length; k++) {
-              if (
-                word[k] === board[currentRow][j].letter &&
-                word[k] === guess[k]
-              ) {
-                newState[currentRow][j].variant = "success";
-              }
-            }
-            if (newState[currentRow][j].variant !== "success") {
-              newState[currentRow][j].variant = "warning";
-            }
-          } else {
-            newState[currentRow][j].variant = "danger";
+          if (word[j] === board[currentRow][j].letter) {
+            newState[currentRow][j].variant = "success";
+            count--;
           }
+          if (newState[currentRow][j].variant !== "success" && count > 0) {
+            newState[currentRow][j].variant = "warning";
+          }
+        } else {
+          newState[currentRow][j].variant = "danger";
         }
       }
     }
@@ -250,8 +250,9 @@ const App: React.FC = () => {
     } else if (target === "ENTER") {
       if (!gameOver) {
         handleEnter();
+      } else {
+        newWord();
       }
-
       return;
     }
     if (currentRow > 5) {
@@ -296,7 +297,6 @@ const App: React.FC = () => {
     setBoard((prevState) => {
       return setNewBoard(word.length);
     });
-    console.log(word);
   }, [word]);
 
   return (
