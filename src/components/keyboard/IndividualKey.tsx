@@ -22,8 +22,9 @@ const IndividualKey: React.FC<KeyProps> = (props) => {
       disabled={props.disableButton}
       size="sm"
     >
-      { props.letter !== "DELETE" && props.letter}
-      {props.letter === "DELETE" && <BsBackspace />}
+      {props.letter !== "DELETE" && props.letter}
+      {props.letter === "DELETE" && "DEL"}
+      {props.letter === "ENTER" && "ENT"}
     </Button>
   );
 };
