@@ -25,7 +25,11 @@ const Header: React.FC<HeaderProps> = (props) => {
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text>
-            <Button variant="outline-dark" onClick={props.newWord}>
+            <Button
+              variant="outline-dark"
+              onClick={props.newWord}
+              onKeyPress={(e: any) => { e.key === 'Enter' && e.preventDefault(); }}
+            >
               New Word
             </Button>{" "}
           </Navbar.Text>

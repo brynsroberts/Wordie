@@ -35,6 +35,8 @@ const getRandomWord = (minLetters: number, maxLetters: number) => {
   return word.toUpperCase();
 };
 
+var handleRealKeyboardClick: any;
+
 const setNewBoard = (wordLength: number) => {
   let newBoard: BoardType[][] = [];
   for (let i = 0; i < 6; i++) {
@@ -136,37 +138,37 @@ const App: React.FC = () => {
 
   const setBoardVariants = (guess: string) => {
     let newState = board;
-      for (let j = 0; j < board[currentRow].length; j++) {
-        if (board[currentRow][j].letter.length < 1) {
-          continue;
-        }
+    for (let j = 0; j < board[currentRow].length; j++) {
+      if (board[currentRow][j].letter.length < 1) {
+        continue;
+      }
+      if (
+        board[currentRow][j].variant !== "success" &&
+        board[currentRow][j].variant !== "danger"
+      ) {
         if (
-          board[currentRow][j].variant !== "success" &&
-          board[currentRow][j].variant !== "danger"
+          guess.includes(board[currentRow][j].letter) &&
+          board[currentRow][j].letter !== "ENTER" &&
+          board[currentRow][j].letter !== "DELETE"
         ) {
-          if (
-            guess.includes(board[currentRow][j].letter) &&
-            board[currentRow][j].letter !== "ENTER" &&
-            board[currentRow][j].letter !== "DELETE"
-          ) {
-            if (word.includes(board[currentRow][j].letter)) {
-              for (let k = 0; k < word.length; k++) {
-                if (
-                  word[k] === board[currentRow][j].letter &&
-                  word[k] === guess[k]
-                ) {
-                  newState[currentRow][j].variant = "success";
-                }
+          if (word.includes(board[currentRow][j].letter)) {
+            for (let k = 0; k < word.length; k++) {
+              if (
+                word[k] === board[currentRow][j].letter &&
+                word[k] === guess[k]
+              ) {
+                newState[currentRow][j].variant = "success";
               }
-              if (newState[currentRow][j].variant !== "success") {
-                newState[currentRow][j].variant = "warning";
-              }
-            } else {
-              newState[currentRow][j].variant = "danger";
             }
+            if (newState[currentRow][j].variant !== "success") {
+              newState[currentRow][j].variant = "warning";
+            }
+          } else {
+            newState[currentRow][j].variant = "danger";
           }
         }
       }
+    }
     setBoard(newState);
   };
 
@@ -178,7 +180,6 @@ const App: React.FC = () => {
     setTotalIndex(0);
     setRealWord(true);
     setKeyboard(setNewKeyboard());
-    console.log(keyboard);
   };
 
   const newWord = () => {
@@ -211,7 +212,6 @@ const App: React.FC = () => {
     for (let cell of board[currentRow]) {
       word += cell.letter;
     }
-    console.log(word);
     return word;
   };
 
@@ -240,13 +240,39 @@ const App: React.FC = () => {
     }
   };
 
+  handleRealKeyboardClick = (keyChar: string, keyNum: number) => {
+    setRealWord(true);
+    let target = "";
+    target = keyChar.toUpperCase();
+    if (target === "BACKSPACE") {
+      handleDelete();
+      return;
+    } else if (target === "ENTER") {
+      if (!gameOver) {
+        handleEnter();
+      }
+
+      return;
+    }
+    if (currentRow > 5) {
+      setGameOver(true);
+    }
+    if (currentColumn < word.length && keyNum >= 65 && keyNum <= 90) {
+      updateBoardAfterInput(target);
+      setTotalIndex(totalIndex + 1);
+      setCurrentColumn(currentColumn + 1);
+    }
+  };
+
   const handleKeyboardClick = (e: any) => {
     e.preventDefault();
     setRealWord(true);
-    if (e.target.value === "DELETE") {
+    let target = e.target.value;
+
+    if (target === "DELETE") {
       handleDelete();
       return;
-    } else if (e.target.value === "ENTER") {
+    } else if (target === "ENTER") {
       handleEnter();
       return;
     }
@@ -254,7 +280,7 @@ const App: React.FC = () => {
       setGameOver(true);
     }
     if (currentColumn < word.length) {
-      updateBoardAfterInput(e.target.value);
+      updateBoardAfterInput(target);
       setTotalIndex(totalIndex + 1);
       setCurrentColumn(currentColumn + 1);
     }
@@ -319,3 +345,7 @@ const App: React.FC = () => {
 };
 
 export default App;
+
+document.addEventListener("keydown", (e: any) => {
+  handleRealKeyboardClick(e.key, e.keyCode);
+});
