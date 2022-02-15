@@ -1,6 +1,6 @@
 .buttonCSS {
   display: inline-block;
-  height: 4rem;
-  min-width: 37px;
-  margin: 2px;
+  height: 3rem;
+  margin: 1px;
+  min-width: 27px;
 }

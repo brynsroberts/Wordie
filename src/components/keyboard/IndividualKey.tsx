@@ -10,8 +10,6 @@ interface KeyProps {
   variant: "success" | "danger" | "secondary" | "warning" | "dark";
 }
 
-
-
 const IndividualKey: React.FC<KeyProps> = (props) => {
   return (
     <Button
@@ -20,6 +18,7 @@ const IndividualKey: React.FC<KeyProps> = (props) => {
       value={props.letter}
       onClick={(e) => props.handleKeyboardClick(e)}
       disabled={props.disableButton}
+      size="sm"
     >
       {props.letter}
     </Button>

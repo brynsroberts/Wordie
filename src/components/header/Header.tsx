@@ -2,6 +2,7 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
+import { RiRestartLine } from "react-icons/ri";
 
 import "./Header.css";
 
@@ -15,7 +16,7 @@ const Header: React.FC<HeaderProps> = (props) => {
     <Navbar id="navbar">
       <Container>
         <Navbar.Collapse className="justify-content-left">
-          <Navbar.Text>Current Streak: {props.streak}</Navbar.Text>
+          <Navbar.Text>Streak: {props.streak}</Navbar.Text>
         </Navbar.Collapse>
         <Navbar.Collapse className="justify-content-center">
           <Navbar.Text id="title">
@@ -28,9 +29,11 @@ const Header: React.FC<HeaderProps> = (props) => {
             <Button
               variant="outline-dark"
               onClick={props.newWord}
-              onKeyPress={(e: any) => { e.key === 'Enter' && e.preventDefault(); }}
+              onKeyPress={(e: any) => {
+                e.key === "Enter" && e.preventDefault();
+              }}
             >
-              New Word
+              <RiRestartLine />
             </Button>{" "}
           </Navbar.Text>
         </Navbar.Collapse>

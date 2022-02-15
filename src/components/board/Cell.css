@@ -1,6 +1,6 @@
 .cell {
   display: inline-block;
-  height: 64px;
-  min-width: 64px;
+  height: 50px;
+  min-width: 50px;
   margin: 2px;
 }
