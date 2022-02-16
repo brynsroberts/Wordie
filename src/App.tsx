@@ -140,34 +140,43 @@ const App: React.FC = () => {
 
   const setBoardVariants = (guess: string) => {
     let newState = board;
+    let guessLetterCount: any = {};
+    let wordLetterCount: any = {};
     for (let j = 0; j < board[currentRow].length; j++) {
-      if (board[currentRow][j].letter.length < 1) {
-        continue;
+      if (guess[j] in guessLetterCount) {
+        guessLetterCount[guess[j]]++;
+      } else {
+        guessLetterCount[guess[j]] = 1;
       }
-      let count = 0;
-      for (const lett of guess) {
-        if (lett === board[currentRow][j].letter) {
-          count++;
+
+      if (word[j] in wordLetterCount) {
+        wordLetterCount[word[j]]++;
+      } else {
+        wordLetterCount[word[j]] = 1;
+      }
+
+      if (word.includes(board[currentRow][j].letter)) {
+        if (word[j] === board[currentRow][j].letter) {
+          newState[currentRow][j].variant = "success";
+          guessLetterCount[word[j]]--;
+          wordLetterCount[word[j]]--;
         }
+      } else {
+        newState[currentRow][j].variant = "danger";
       }
-      if (
-        board[currentRow][j].variant !== "success" &&
-        board[currentRow][j].variant !== "danger"
-      ) {
-        if (
-          word.includes(board[currentRow][j].letter) &&
-          board[currentRow][j].letter !== "ENTER" &&
-          board[currentRow][j].letter !== "DELETE"
-        ) {
-          if (word[j] === board[currentRow][j].letter) {
-            newState[currentRow][j].variant = "success";
-            count--;
+    }
+
+    // fix orange cells
+    for (const letter in guessLetterCount) {
+      if (guessLetterCount[letter] > 0 && wordLetterCount[letter] > 0) {
+        for (let i = 0; i < board[currentRow].length; i++) {
+          if (
+            board[currentRow][i].letter === letter &&
+            newState[currentRow][i].variant !== "success" &&
+            word.includes(letter)
+          ) {
+            newState[currentRow][i].variant = "warning";
           }
-          if (newState[currentRow][j].variant !== "success" && count > 0) {
-            newState[currentRow][j].variant = "warning";
-          }
-        } else {
-          newState[currentRow][j].variant = "danger";
         }
       }
     }
