@@ -7,6 +7,7 @@ import Header from "./components/header/Header";
 import Board from "./components/board/Board";
 import Keyboard from "./components/keyboard/Keyboard";
 import Outcome from "./components/Outcome/Outcome";
+import BadWord from "./components/Outcome/BadWord";
 import "./App.css";
 const wordExists = require("word-exists");
 
@@ -100,6 +101,7 @@ const App: React.FC = () => {
   const [streak, setStreak] = useState<number>(0);
   const [realWord, setRealWord] = useState<boolean>(true);
   const [keyboard, setKeyboard] = useState<KeyboardType[][]>(setNewKeyboard());
+  const [modalShow, setModalShow] = useState<boolean>(false);
 
   const setKeyboardVariants = (guess: string) => {
     let newState = keyboard;
@@ -226,10 +228,12 @@ const App: React.FC = () => {
           setGameWon(true);
           setCurrentRow(currentRow + 1);
           setStreak(streak + 1);
+          setModalShow(true);
         } else if (currentRow === NUMBER_OF_ROWS - 1) {
           setGameOver(true);
           setCurrentRow(currentRow + 1);
           setStreak(0);
+          setModalShow(true);
         } else {
           setCurrentRow(currentRow + 1);
           setCurrentColumn(0);
@@ -297,6 +301,7 @@ const App: React.FC = () => {
     setBoard((prevState) => {
       return setNewBoard(word.length);
     });
+    console.log(word);
   }, [word]);
 
   return (
@@ -311,20 +316,28 @@ const App: React.FC = () => {
       <Row>
         <Col></Col>
         <Col xs={12} md={10}>
-          {(gameOver || !realWord) && (
+          {gameOver && (
             <Outcome
               gameOver={gameOver}
               gameWon={gameWon}
               word={word}
               realWord={realWord}
+              show={modalShow}
+              onHide={() => {
+                setModalShow(false);
+                newWord();
+              }}
+              streak={streak}
             />
+          )}
+          {!realWord && (
+            <BadWord realWord={realWord} onHide={() => setRealWord(true)} />
           )}
           <Board
             word={word}
             board={board}
             totalIndex={totalIndex}
             currentRow={currentRow}
-            style={gameOver || !realWord ? "word" : ""}
           />
         </Col>
         <Col></Col>
@@ -347,5 +360,6 @@ const App: React.FC = () => {
 export default App;
 
 document.addEventListener("keydown", (e: any) => {
+  e.preventDefault();
   handleRealKeyboardClick(e.key, e.keyCode);
 });

@@ -1,26 +1,39 @@
 import React from "react";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 interface OutcomeProps {
   gameOver: boolean;
   gameWon: boolean;
   word: string;
   realWord: boolean;
+  show: boolean;
+  onHide: () => void;
+  streak: number;
 }
 
 const Outcome: React.FC<OutcomeProps> = (props) => {
   return (
-    <Row className="align-items-center justify-content-center">
-      <Col xs={12}>
-        {props.gameWon && <h3>Winner!</h3>}
-        {props.gameOver && !props.gameWon && (
-          <h3>Game Over: The Word Was {props.word}</h3>
-        )}
-        {!props.realWord && <h3>Not A Real Word!</h3>}
-        {!props.gameWon && !props.gameOver && <h3>{"    "}</h3>}
-      </Col>
-    </Row>
+    <Modal
+      show={props.show}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header>
+        <Modal.Title id="contained-modal-title-vcenter">
+          {props.gameWon && "Winner!"}
+          {props.gameOver && !props.gameWon && "Game Over"}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {props.gameOver && !props.gameWon && "The word was " + props.word}
+        {props.gameWon && "Current Streak: " + props.streak}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>New Word</Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 
