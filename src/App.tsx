@@ -8,6 +8,7 @@ import Board from "./components/board/Board";
 import Keyboard from "./components/keyboard/Keyboard";
 import Outcome from "./components/Outcome/Outcome";
 import BadWord from "./components/Outcome/BadWord";
+import Help from "./components/Help/Help";
 import "./App.css";
 const wordExists = require("word-exists");
 
@@ -102,6 +103,7 @@ const App: React.FC = () => {
   const [realWord, setRealWord] = useState<boolean>(true);
   const [keyboard, setKeyboard] = useState<KeyboardType[][]>(setNewKeyboard());
   const [modalShow, setModalShow] = useState<boolean>(false);
+  const [showHelp, setShowHelp] = useState<boolean>(true);
 
   const setKeyboardVariants = (guess: string) => {
     let newState = keyboard;
@@ -310,7 +312,6 @@ const App: React.FC = () => {
     setBoard((prevState) => {
       return setNewBoard(word.length);
     });
-    console.log(word);
   }, [word]);
 
   return (
@@ -319,6 +320,7 @@ const App: React.FC = () => {
         <Col></Col>
         <Col xs={12} md={8} lg={6}>
           <Header newWord={newWord} streak={streak} />
+          <Help show={showHelp} onHide={() => setShowHelp(false)} />
         </Col>
         <Col></Col>
       </Row>

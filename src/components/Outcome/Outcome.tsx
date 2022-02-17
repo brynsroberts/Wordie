@@ -22,15 +22,11 @@ const Outcome: React.FC<OutcomeProps> = (props) => {
     >
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
-          {props.gameWon && "Winner! The word was " + props.word}
-          {props.gameOver &&
-            !props.gameWon &&
-            "Game Over.  The word was " + props.word}
+          {props.gameWon && "Winner!"}
+          {props.gameOver && !props.gameWon && "Game Over"}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        {props.gameWon && "Current Streak: " + props.streak}
-      </Modal.Body>
+      <Modal.Body>{"The word was: " + props.word}</Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>New Word</Button>
       </Modal.Footer>
