@@ -249,6 +249,7 @@ const App: React.FC = () => {
           setCurrentRow(currentRow + 1);
           setCurrentColumn(0);
         }
+      } else if (realWord === false) {
       } else {
         setRealWord(false);
       }
